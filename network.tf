@@ -1,6 +1,4 @@
-
 # Common security group for HTTP, HTTPS, and custom ports (shared by all)
-
 resource "aws_security_group" "common_sg" {
   name        = "common-sg"
   description = "Allow HTTP, HTTPS, and custom app ports"
@@ -119,4 +117,58 @@ resource "aws_security_group" "grafana_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_security_group" "ansible_sg" {
+  name        = "ansible-control-sg"
+  description = "Security group for Ansible control node"
+  vpc_id      = aws_vpc.main.id  # your VPC ID
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]  # Allow SSH into control node only from your IP
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
+  }
+}
+
+
+# Allow SSH from Ansible control node to Docker Server
+resource "aws_security_group_rule" "allow_ssh_from_ansible_to_docker" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.docker_sg.id
+  source_security_group_id = aws_security_group.ansible_sg.id
+  description              = "Allow SSH from Ansible control node"
+}
+
+# Allow SSH from Ansible control node to Prometheus Server
+resource "aws_security_group_rule" "allow_ssh_from_ansible_to_prometheus" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.prometheus_sg.id
+  source_security_group_id = aws_security_group.ansible_sg.id
+  description              = "Allow SSH from Ansible control node"
+}
+
+# Allow SSH from Ansible control node to Grafana Server
+resource "aws_security_group_rule" "allow_ssh_from_ansible_to_grafana" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.grafana_sg.id
+  source_security_group_id = aws_security_group.ansible_sg.id
+  description              = "Allow SSH from Ansible control node"
 }
