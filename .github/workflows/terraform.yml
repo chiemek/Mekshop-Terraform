@@ -1,5 +1,5 @@
 # .github/workflows/terraform.yml
-name: MekShop Terraform 
+name: MekShop Terraform
 
 on:
   push:
@@ -33,4 +33,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="my_ip=${{ vars.MY_PUBLIC_IP }}"
