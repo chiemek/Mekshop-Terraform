@@ -59,10 +59,7 @@ resource "aws_security_group" "docker_ssh_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [
-      locals.my_ip_cidr,
-      aws_instance.prometheus.private_ip # Reference created in `instances.tf`
-    ]
+    cidr_blocks = [var.my_ip]  
   }
 
   # SSH from Prometheus private IP (will set after we create prometheus instance)
@@ -92,10 +89,7 @@ resource "aws_security_group" "prometheus_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [
-      locals.my_ip_cidr,
-      aws_instance.prometheus.private_ip # Reference created in `instances.tf`
-    ]  
+    cidr_blocks = [var.my_ip]  
 }
 
   egress {
@@ -116,10 +110,7 @@ resource "aws_security_group" "grafana_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-  cidr_blocks = [
-      locals.my_ip_cidr,
-      aws_instance.prometheus.private_ip # Reference created in `instances.tf`
-    ]
+    cidr_blocks = [var.my_ip]  
   }
 
   egress {
