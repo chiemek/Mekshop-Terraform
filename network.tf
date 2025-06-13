@@ -122,7 +122,6 @@ resource "aws_security_group" "grafana_sg" {
 resource "aws_security_group" "ansible_sg" {
   name        = "ansible-control-sg"
   description = "Security group for Ansible control node"
-  vpc_id      = aws_vpc.main.id  # your VPC ID
 
   ingress {
     from_port   = 22
