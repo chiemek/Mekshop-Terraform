@@ -50,7 +50,7 @@ resource "aws_security_group" "common_sg" {
 }
 
 # Security Group for Docker Server SSH
-resource "aws_security_group" "docker_ssh_sg" {
+resource "aws_security_group" "docker_sg" {
   name        = "docker-ssh-sg"
   description = "SSH access for docker server from my_ip and prometheus private IP"
 
