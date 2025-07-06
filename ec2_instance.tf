@@ -31,7 +31,7 @@ resource "aws_instance" "prometheus" {
   }
 }
 
-resource "aws_instance" "grafana2" {
+resource "aws_instance" "grafana" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t2.micro"
   key_name               = "web-server"  
@@ -42,7 +42,7 @@ resource "aws_instance" "grafana2" {
   }
 }
 
-resource "aws_instance" "ansible_control2" {
+resource "aws_instance" "ansible_control" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t2.micro"
   key_name               = "web-server"
