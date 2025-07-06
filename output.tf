@@ -2,14 +2,14 @@ output "instance_ips" {
   value = [
     aws_instance.docker.public_ip,
     aws_instance.prometheus.public_ip,
-    aws_instance.grafana.public_ip
+    aws_instance.grafana2.public_ip
   ]
 }
 output "instance_ids" {
   value = [
     aws_instance.docker.id,
     aws_instance.prometheus.id,
-    aws_instance.grafana.id
+    aws_instance.grafana2.id
   ]
 }
 output "security_group_id" {
